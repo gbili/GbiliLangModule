@@ -1,0 +1,24 @@
+{
+    "name":        "gbili/gbili-lang-module",
+    "description": "Zend Framework 2 Module that provides lang functionality",
+    "type":        "library",
+    "license":     "MIT",
+    "homepage":    "http://gbili.com",
+    "keywords":    [
+        "upload",
+        "module",
+        "zf2"
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php":                                ">=5.3.3"
+    },
+    "require-dev": {
+        "zendframework/zendframework": "~2.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "GbiliLangModule\\": "src/"
+        }
+    }
+}

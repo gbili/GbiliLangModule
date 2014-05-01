@@ -1,0 +1,13 @@
+<?php $langs = $this->langSelector() ?>
+<?php $langsCount = count($langs) ?>
+<ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= $this->translate('Language', 'lang')?>: <span class="tex"><?= $this->lang() ?></span><b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <?php $selectableLangs = array_diff($langs, array($this->lang())) ?>
+            <?php foreach ($selectableLangs as $lang): ?>
+                <li><a href="<?= ((!$this->langSelector('hasMatchedRoute'))? "/$lang/" : $this->url(null, array('lang' => $lang), true)) ?>"><?= $this->translate($lang, 'lang') ?></a></li>
+            <?php endforeach ?>
+        </ul>
+    </li>
+</ul>

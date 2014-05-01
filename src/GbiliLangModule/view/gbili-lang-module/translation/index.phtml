@@ -1,0 +1,7 @@
+<?php $this->notify(((isset($messages))? $messages : array())) ?>
+<?php foreach ($textdomains as $textdomain) : ?>
+<a href="<?= $this->url('lang_translation_bulk_route', array('textdomain' => $textdomain), true)?>"><?= $textdomain?></a>
+<?php endforeach ?>
+<h3><?= $this->translate('Other actions')?></h3>
+<a href="<?= $this->url('lang_translation_merge_route', array(), true)?>"><?= $this->translate('Merge Translations')?></a>
+

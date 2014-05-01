@@ -1,0 +1,20 @@
+<?php $aclGuard = $this->layout()->aclGuard ?>
+<?php $acl = $aclGuard->getAcl() ?>
+<?php $role = $aclGuard->getRole() ?>
+<div class="list-group">
+<?php foreach ($this->container as $page): ?>
+    <?php /* @var $page Zend\Navigation\Page\Mvc */ ?>
+    <?php // when using partials we need to manually check for ACL conditions ?>
+    <?php $isAllowed = $acl->isAllowed($role, $page->getRoute()) ?>
+    <?php if( !$isAllowed || ! $page->isVisible() || !$this->navigation()->accept($page)) continue; ?>
+    <?php $this->lang($page) ?>
+    <?php if( ! $page->hasPages()): ?>
+            <a class="list-group-item<?php if ($page->isActive()) echo ' active' ?>" href="<?= $page->getHref() ?>">
+                <?php if ($page->iconClass) : ?>
+                    <span class="<?= $page->iconClass ?>"></span>
+                <?php endif ?>
+                <span class="text"><?= $this->translate($page->getLabel(), 'blog') ?></span>
+            </a>
+    <?php endif ?>
+<?php endforeach ?>
+</div><!-- End Side nav -->
