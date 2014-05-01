@@ -4,8 +4,8 @@ return array(
     'initializers' => array(
         'injectTranslatorTextDomain' => function ($helper, $vhp) {
             if (($helper instanceof \Zend\I18n\Translator\TranslatorAwareInterface)) {
-                //$vhp->getServiceLocator()->get('textdomain')->getTextdomain();
-                $helper->setTranslatorTextDomain('lang');
+                $textdomain = $vhp->getServiceLocator()->get('textdomain')->getTextdomain();
+                $helper->setTranslatorTextDomain($textdomain);
             }
         }
     ),

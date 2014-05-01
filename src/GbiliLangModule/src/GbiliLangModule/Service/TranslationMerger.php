@@ -29,13 +29,19 @@ class TranslationMerger
      */
     protected $textdomainService;
 
-    public function mergeAllTextdomainTranslations($mergeIntoTextdomain = 'lang')
+    public function mergeAllTextdomainTranslations($mergeIntoTextdomain=null)
     {
+        if (null === $mergeIntoTextdomain) {
+            $mergeIntoTextdomain = $this->getTextdomainService()->getDefaultTextdomain();
+        }
         return $this->mergeTextdomainsTranslations($this->getTextdomainService()->getTextdomains(), $mergeIntoTextdomain);
     }
 
-    public function mergeTextdomainsTranslations(array $textdomains, $mergeIntoTextdomain = 'lang')
+    public function mergeTextdomainsTranslations(array $textdomains, $mergeIntoTextdomain=null)
     {
+        if (null === $mergeIntoTextdomain) {
+            $mergeIntoTextdomain = $this->getTextdomainService()->getDefaultTextdomain();
+        }
         $storageService     = $this->getTranslationStorageService();
         $textdomains = array_diff($textdomains, array($mergeIntoTextdomain));
         
