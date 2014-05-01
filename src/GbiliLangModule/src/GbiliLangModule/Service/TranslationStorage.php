@@ -26,7 +26,7 @@ class TranslationStorage
 
     public function __construct()
     {
-        $this->moduleInflector = new \Zend\Filter\DashToCamelCase();
+        $this->moduleInflector = new \Zend\Filter\Word\DashToCamelCase();
         $appDir = realpath(__DIR__ . str_repeat('/..', 8));
         $this->setModulesDir($appDir . '/module');
     }
