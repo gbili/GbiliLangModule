@@ -22,7 +22,8 @@ class TranslationStorage
 
     public function __construct()
     {
-        $this->setModulesDir(__DIR__ . '/../../../../');
+        $appDir = __DIR__ . str_repeat('/..', 8);
+        $this->setModulesDir($appDir . '/module');
     }
 
     public function isTranslated($textdomain, $locale, $string)
