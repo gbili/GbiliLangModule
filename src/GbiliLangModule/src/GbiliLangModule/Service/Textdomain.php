@@ -56,7 +56,7 @@ class Textdomain
     {
         $inflector = new \Zend\Filter\Word\CamelCaseToDash();
         $textdomains = array_map(function ($modulename) use ($inflector) {
-            return $inflector->filter($modulename);
+            return strtolower($inflector->filter($modulename));
         }, $this->getRegisteredModules());
         return $textdomains;
     }
