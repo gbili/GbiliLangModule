@@ -63,9 +63,9 @@ class LangSelector extends \Zend\View\Helper\AbstractHelper
         return $this->availableLangs;
     }
 
-    public function getDefaultPartialPath()
+    public function getDefaultPartialPath($partialName='langnav')
     {
-        $scriptPath = __DIR__ . '/../../../../view/partial/' . $scriptName . '.phtml';
+        $scriptPath = __DIR__ . '/../../../../view/partial/' . $partialName . '.phtml';
         if (!file_exists($scriptPath)) {
             throw new \Exception('The requested script does not exist');
         }
