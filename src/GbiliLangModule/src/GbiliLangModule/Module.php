@@ -24,7 +24,7 @@ class Module
     {
         //$this->populateTranslations($e);
         $this->injectLang($e);
-        $this->manualTextdomain('lang', $e);//$this->injectTextdomain($e);
+        //$this->manualTextdomain('gbili-lang-module', $e);
         $this->missingTranslationListener($e);
     }
 
@@ -59,7 +59,11 @@ class Module
         });
     }
 
-    public function manualTextdomain($textdomain, $e)
+    /**
+     * onBoostrap call this method (copy its contents to your module)
+     * $this->manualTextdomain('my-module', MvcEvent $e)
+     */
+    public function manualTextdomain($textdomain, \Zend\Mvc\MvcEvent $e)
     {
         $sm = $e->getApplication()->getServiceManager();
         $textdomainService = $sm->get('textdomain');

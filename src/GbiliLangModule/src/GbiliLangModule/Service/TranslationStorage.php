@@ -17,12 +17,17 @@ class TranslationStorage
      * filename => array(string=>translation, ...)
      */
     protected $cache = array();
-
     protected $modulesDir;
+
+    /**
+     * @var \Zend\Filter\DashToCamelCase
+     */
+    protected $moduleInflector;
 
     public function __construct()
     {
-        $appDir = __DIR__ . str_repeat('/..', 8);
+        $this->moduleInflector = new \Zend\Filter\DashToCamelCase();
+        $appDir = realpath(__DIR__ . str_repeat('/..', 8));
         $this->setModulesDir($appDir . '/module');
     }
 
@@ -75,10 +80,18 @@ class TranslationStorage
         return $this->modulesDir;
     }
 
-    public function getLocalizedFilename($lcModuleName, $locale)
+    public function getLocalizedFilename($dashModuleName, $locale)
     {
-        $dir = realpath($this->getModulesDir() . ucfirst($lcModuleName) . '/language');
-        return $filename = $dir . '/' . $locale . '.php';
+        $moduleName = $this->moduleInflector->filter($dashModuleName);
+        $moduleDir = realpath($this->getModulesDir() .  '/' . $moduleName);
+        if (false === $moduleDir) {
+            throw new \Exception('Module dir does not exist. Dash Module name is: ' . $dashModuleName . '. Camel Case Module Name: ' . $moduleName);
+        }
+        $languageDir = realpath($moduleDir . '/language');
+        if (false === $languageDir) {
+            throw new \Exception("Module $moduleName has no ./language dir");
+        }
+        return $languageDir . "/$locale.php";
     }
     
     public function getCache($textdomain, $locale)
