@@ -25,7 +25,7 @@ class LangSelector extends \Zend\View\Helper\AbstractHelper
         if (null !== $param) {
             return $this->handleParam($param);
         }
-        return $this->getAvailableLangs();
+        return $this;
     }
 
     public function handleParam($param)
@@ -70,6 +70,5 @@ class LangSelector extends \Zend\View\Helper\AbstractHelper
             throw new \Exception('The requested script does not exist');
         }
         return $scriptPath;
-
     }
 }
