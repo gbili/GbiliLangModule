@@ -33,6 +33,14 @@ class Textdomain implements \Zend\EventManager\EventManagerAwareInterface
         $this->eventManager = $eventManager;
     }
 
+    /**
+     * @return \Zend\EventManager\EventManagerInterface $eventManager
+     */
+    public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
     public function getTextdomain()
     {
         if (!$this->hasTextdomain()) {
