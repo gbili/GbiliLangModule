@@ -20,10 +20,10 @@ class Textdomain
 
     public function getTextdomain()
     {
-        if ($this->hasTextdomain()) {
-            return $this->textdomain;
+        if (!$this->hasTextdomain()) {
+            throw new \Exception('Textdomain is not set');
         }
-        return $this->getDefaultTextdomain();
+        return $this->textdomain;
     }
 
     public function hasTextdomain()
