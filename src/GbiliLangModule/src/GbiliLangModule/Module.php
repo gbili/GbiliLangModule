@@ -76,11 +76,10 @@ class Module
     }
 
     /**
-     * onBoostrap call this method (copy its contents to your module)
-     * Ex: $this->manualTextdomain('my-module', \Zend\Mvc\MvcEvent $e)
+     * onBoostrap call this method
+     * Sets textdomain, may be overriden by other listeners
      */
-    /*
-    public function manualTextdomain(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
+    public static function setTextdomainManually(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
     {
         $eventManager = $e->getApplication()->getEventManager();
         $eventManager->attach(\GbiliLangModule\Module::EVENT_SET_TEXTDOMAIN, function ($e) use ($textdomain) {
@@ -88,7 +87,21 @@ class Module
             $textdomainService->setTextdomain($textdomain);
         }, $priority); // set priority to high negative numbers to override other listeners
     }
-    */
+
+    /**
+     * onBoostrap call this method 
+     * Only sets textdomain if not set in self::EVENT_SET_TEXTDOMAIN
+     */
+    public static function setOnMissingTextdomain(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
+    {
+        $sm = $e->getApplication()->getServiceManager();
+        $service = $sm->get('textdomain');
+        $eventManager = $service->getEventManager();
+        $eventManager->attach(\GbiliLangModule\Service\Textdomain::EVENT_MISSING_TEXTDOMAIN, function ($e) use ($textdomain) {
+            $textdomainService = $e->getTarget();
+            $textdomainService->setTextdomain($textdomain);
+        }, $priority); // set priority to high negative numbers to override other listeners
+    }
 
     /**
      * Set the textdomain according to the controller being dispatched
