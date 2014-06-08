@@ -1,8 +1,10 @@
 <?php
 namespace GbiliLangModule\Service;
 
-class Textdomain
+class Textdomain implements Zend\EventManager\EventManagerAwareInterface
 {
+    const EVENT_MISSING_TEXTDOMAIN;
+
     protected $textdomain;
 
     protected $defaultTextdomain = 'application';
@@ -11,6 +13,11 @@ class Textdomain
 
     protected $controller;
 
+    /**
+     * @var \Zend\EventManager\EventManagerInterface
+     */
+    protected $eventManager;
+
     public function __construct($sm = null)
     {
         if (null !== $sm) {
@@ -18,10 +25,21 @@ class Textdomain
         }
     }
 
+    /**
+     * @param \Zend\EventManager\EventManagerInterface $eventManager
+     */
+    public function setEventManager(\Zend\EventManager\EventManagerInterface $eventManager)
+    {
+        $this->eventManager = $eventManager;
+    }
+
     public function getTextdomain()
     {
         if (!$this->hasTextdomain()) {
-            throw new \Exception('Textdomain is not set');
+            $this->eventManager->trigger(self::EVENT_MISSING_TEXTDOMAIN, $this);
+            if (!$this->hasTextdomain()) {
+                throw new \Exception('Missing textdomain, no listeners set it');
+            }
         }
         return $this->textdomain;
     }

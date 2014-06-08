@@ -5,6 +5,11 @@ class Module
 {
     const EVENT_SET_TEXTDOMAIN = 'GbiliLangModule.textdomain_service.set_textdomain';
 
+    /**
+     * Textdomain injection must occur before lang injection
+     */
+    const TEXTDOMAIN_INJECTION_PRIORITY = 100;
+
     public function getConfig()
     {
         $preConfig = include __DIR__ . '/../../config/module.pre_config.php';
@@ -25,8 +30,8 @@ class Module
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
         //$this->populateTranslations($e);
-        $this->injectLang($e);
         $this->injectTextdomainDontOverrideManualTextdomain($e);
+        $this->injectLang($e);
         $this->missingTranslationListener($e);
     }
 
@@ -58,7 +63,7 @@ class Module
             $translator->setFallbackLocale($defaultLang);
             $langService->setDefault($defaultLang);
             $translator->setLocale($currentLang);
-        });
+        }, self::TEXTDOMAIN_INJECTION_PRIORITY - 1);
     }
 
     /**
@@ -94,7 +99,7 @@ class Module
             if (!$service->hasTextdomain()) {
                 $service->setController($e->getTarget());
             }
-        });
+        }, self::TEXTDOMAIN_INJECTION_PRIORITY);
     }
 
     /**
