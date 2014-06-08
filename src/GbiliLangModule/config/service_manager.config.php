@@ -16,7 +16,7 @@ return array(
             $service = new Service\TranslationMerger;
             $service->setTextdomainService($sm->get('textdomain'));
             $service->setTranslationStorageService($sm->get('translationStorage'));
-            $service->setLangService($sm->get('lang'));
+            $service->setLangServic($sm->get('lang'));
             return $service;
         },
     ),

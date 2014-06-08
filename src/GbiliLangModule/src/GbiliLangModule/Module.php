@@ -3,6 +3,15 @@ namespace GbiliLangModule;
 
 class Module 
 {
+    /**
+     * Use this event if you want to manually set the textdomain
+     * However if you only want to set the textdomain in case it
+     * is missing, use \GbiliLangModule\Service\Textdomain::EVENT_MISSING_TEXTDOMAIN
+     *
+     * @see \GbiliLangModule\Service\Textdomain::EVENT_MISSING_TEXTDOMAIN
+     *   to only set the textomain if it is missing
+     * @var string
+     */
     const EVENT_SET_TEXTDOMAIN = 'GbiliLangModule.textdomain_service.set_textdomain';
 
     /**
@@ -70,7 +79,8 @@ class Module
      * onBoostrap call this method (copy its contents to your module)
      * Ex: $this->manualTextdomain('my-module', \Zend\Mvc\MvcEvent $e)
      */
-    public static function manualTextdomain(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
+    /*
+    public function manualTextdomain(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
     {
         $eventManager = $e->getApplication()->getEventManager();
         $eventManager->attach(\GbiliLangModule\Module::EVENT_SET_TEXTDOMAIN, function ($e) use ($textdomain) {
@@ -78,6 +88,7 @@ class Module
             $textdomainService->setTextdomain($textdomain);
         }, $priority); // set priority to high negative numbers to override other listeners
     }
+    */
 
     /**
      * Set the textdomain according to the controller being dispatched
@@ -97,6 +108,7 @@ class Module
 
             if (!$service->hasTextdomain()) {
                 $service->setController($e->getTarget());
+                $service->autosetGuessedTextdomain();
             }
         }, self::TEXTDOMAIN_INJECTION_PRIORITY);
     }

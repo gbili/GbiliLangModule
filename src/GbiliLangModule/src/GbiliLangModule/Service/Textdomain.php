@@ -123,7 +123,16 @@ class Textdomain implements \Zend\EventManager\EventManagerAwareInterface
         return $this->hasController();
     }
 
-    public function guessTexdomain()
+    public function autosetGuessedTextdomain(\Zend\Mvc\Controller\AbstractActionController $controller=null)
+    {
+        if (null !== $controller) {
+            $this->setController($controller);
+        }
+        $this->setTextdomain($this->guessTextdomain());
+        return $this;
+    }
+
+    public function guessTextdomain()
     {
         if (!$this->canGuessTextdomain()) {
             throw new \Exception('Cannot guess textdomain if no controller is set');
