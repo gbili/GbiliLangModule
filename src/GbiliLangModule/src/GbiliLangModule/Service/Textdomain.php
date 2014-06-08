@@ -1,12 +1,15 @@
 <?php
 namespace GbiliLangModule\Service;
 
-class Textdomain 
+class Textdomain
 {
     protected $textdomain;
+
     protected $defaultTextdomain = 'application';
 
     protected $sm;
+
+    protected $controller;
 
     public function __construct($sm = null)
     {
@@ -17,11 +20,17 @@ class Textdomain
 
     public function getTextdomain()
     {
-        if (null !== $this->textdomain) {
+        if ($this->hasTextdomain()) {
             return $this->textdomain;
         }
         return $this->getDefaultTextdomain();
     }
+
+    public function hasTextdomain()
+    {
+        return null !== $this->textdomain;
+    }
+
     /**
      * @return manually set textdomain
      */
@@ -65,11 +74,36 @@ class Textdomain
     public function setController($controller)
     {
         if ($controller instanceof \Zend\Mvc\Controller\AbstractActionController) {
-            $baseNamespace = current(explode('\\', get_class($controller)));
-            if (in_array($baseNamespace, $this->getRegisteredModules())) {
-                $this->textdomain = strtolower($baseNamespace);
-            }
+            $this->controller = $controller;
         }
+        return $this;
+    }
+
+    public function hasController()
+    {
+        return null !== $this->controller;
+    }
+
+    public function getController()
+    {
+        if (!$this->hasController()) {
+            throw new \Exception('No controller was set');
+        }
+        return $this->controller;
+    }
+
+    public function canGuessTextdomain()
+    {
+        return $this->hasController();
+    }
+
+    public function guessTexdomain()
+    {
+        if (!$this->canGuessTextdomain()) {
+            throw new \Exception('Cannot guess textdomain if no controller is set');
+        }
+        $baseNamespace = current(explode('\\', get_class($this->getController())));
+        return strtolower($baseNamespace);
     }
 
     public function getDefaultTextdomain()

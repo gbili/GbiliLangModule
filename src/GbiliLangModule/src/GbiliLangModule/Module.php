@@ -3,6 +3,8 @@ namespace GbiliLangModule;
 
 class Module 
 {
+    const EVENT_SET_TEXTDOMAIN = 'GbiliLangModule.textdomain_service.set_textdomain';
+
     public function getConfig()
     {
         $preConfig = include __DIR__ . '/../../config/module.pre_config.php';
@@ -24,7 +26,7 @@ class Module
     {
         //$this->populateTranslations($e);
         $this->injectLang($e);
-        //$this->manualTextdomain('gbili-lang-module', $e);
+        $this->injectTextdomainDontOverrideManualTextdomain($e);
         $this->missingTranslationListener($e);
     }
 
@@ -61,22 +63,37 @@ class Module
 
     /**
      * onBoostrap call this method (copy its contents to your module)
-     * $this->manualTextdomain('my-module', MvcEvent $e)
+     * Ex: $this->manualTextdomain('my-module', \Zend\Mvc\MvcEvent $e)
      */
+    /*
     public function manualTextdomain($textdomain, \Zend\Mvc\MvcEvent $e)
     {
-        $sm = $e->getApplication()->getServiceManager();
-        $textdomainService = $sm->get('textdomain');
-        $textdomainService->setTextdomain($textdomain);
-    }
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventManager->attach(\GbiliLangModule\Module::EVENT_SET_TEXTDOMAIN, function ($e) use ($textdomain) {
+            $textdomainService = $e->getTarget();
+            $textdomainService->setTextdomain($textdomain);
+        }, 1); // set priority to high negative numbers to override other listeners
+    }*/
 
-    public function injectTextdomain($e)
+    /**
+     * Set the textdomain according to the controller being dispatched
+     * only if it is not already set from event listeners to self::EVENT_SET_TEXTDOMAIN
+     */
+    public function injectTextdomainDontOverrideManualTextdomain($e)
     {
         $eventManager = $e->getApplication()->getEventManager();
         $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH, function ($e) {
-            $sm = $e->getApplication()->getServiceManager();
-            $textdomainService = $sm->get('textdomain');
-            $textdomainService->setController($e->getTarget());
+            $app = $e->getApplication();
+            $sm = $app->getServiceManager();
+            $eventManager = $app->getEventManager();
+
+            $service = $sm->get('textdomain');
+
+            $eventManager->trigger(self::EVENT_SET_TEXDOMAIN, $service);
+
+            if (!$service->hasTextdomain()) {
+                $service->setController($e->getTarget());
+            }
         });
     }
 
