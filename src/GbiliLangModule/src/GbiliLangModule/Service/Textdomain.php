@@ -3,7 +3,7 @@ namespace GbiliLangModule\Service;
 
 class Textdomain implements Zend\EventManager\EventManagerAwareInterface
 {
-    const EVENT_MISSING_TEXTDOMAIN;
+    const EVENT_MISSING_TEXTDOMAIN = 'GbiliLangModule\Service\Textdomain.missing_texdomain';
 
     protected $textdomain;
 
