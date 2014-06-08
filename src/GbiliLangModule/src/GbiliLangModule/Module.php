@@ -70,15 +70,14 @@ class Module
      * onBoostrap call this method (copy its contents to your module)
      * Ex: $this->manualTextdomain('my-module', \Zend\Mvc\MvcEvent $e)
      */
-    /*
-    public function manualTextdomain($textdomain, \Zend\Mvc\MvcEvent $e)
+    public static function manualTextdomain(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
     {
         $eventManager = $e->getApplication()->getEventManager();
         $eventManager->attach(\GbiliLangModule\Module::EVENT_SET_TEXTDOMAIN, function ($e) use ($textdomain) {
             $textdomainService = $e->getTarget();
             $textdomainService->setTextdomain($textdomain);
-        }, 1); // set priority to high negative numbers to override other listeners
-    }*/
+        }, $priority); // set priority to high negative numbers to override other listeners
+    }
 
     /**
      * Set the textdomain according to the controller being dispatched
