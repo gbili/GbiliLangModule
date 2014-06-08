@@ -89,7 +89,7 @@ class Module
 
             $service = $sm->get('textdomain');
 
-            $eventManager->trigger(self::EVENT_SET_TEXDOMAIN, $service);
+            $eventManager->trigger(self::EVENT_SET_TEXTDOMAIN, $service);
 
             if (!$service->hasTextdomain()) {
                 $service->setController($e->getTarget());
