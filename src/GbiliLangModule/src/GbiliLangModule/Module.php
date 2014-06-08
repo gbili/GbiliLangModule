@@ -106,9 +106,8 @@ class Module
 
             $eventManager->trigger(self::EVENT_SET_TEXTDOMAIN, $service);
 
-            if (!$service->hasTextdomain()) {
-                $service->setController($e->getTarget());
-                $service->autosetGuessedTextdomain();
+            if (!$service->hasTextdomain() && ($e->getTarget() instanceof \Zend\Mvc\Controller\AbstractActionController)) {
+                $service->autosetGuessedTextdomain($e->getTarget());
             }
         }, self::TEXTDOMAIN_INJECTION_PRIORITY);
     }
