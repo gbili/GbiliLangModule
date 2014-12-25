@@ -3,7 +3,6 @@ namespace GbiliLangModule;
 return array(
     'initializers' => array(
         'injectTranslatorTextDomain' => function ($helper, $vhp) {
-            // TODO throws an exception texdomain is not explicitely set
             if (($helper instanceof \Zend\I18n\Translator\TranslatorAwareInterface)) {
                 $textdomain = $vhp->getServiceLocator()->get('textdomain')->getTextdomain();
                 $helper->setTranslatorTextDomain($textdomain);

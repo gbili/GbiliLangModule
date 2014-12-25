@@ -76,10 +76,22 @@ class Module
     }
 
     /**
-     * onBoostrap call this method
-     * Sets textdomain, may be overriden by other listeners
+     * @Proxy setTextdomainEager()
      */
     public static function setTextdomainManually(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
+    {
+        return self::setTextdomainEagerOnDispatch($e, $textdomain, $priority);
+    }
+
+    /**
+     * onBoostrap call this method
+     * Set Textomain on dispatch event. Even if the textdomain service is not used, it will
+     * be set on every request
+     * Sets textdomain, may be overriden by other listeners
+     * If textdomain is queried before dispatch, it will not be set
+     * in that case only setTextdomainLazyIfMissing()
+     */
+    public static function setTextdomainEagerOnDispatch(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
     {
         $eventManager = $e->getApplication()->getEventManager();
         $eventManager->attach(\GbiliLangModule\Module::EVENT_SET_TEXTDOMAIN, function ($e) use ($textdomain) {
@@ -89,10 +101,19 @@ class Module
     }
 
     /**
-     * onBoostrap call this method 
-     * Only sets textdomain if not set in self::EVENT_SET_TEXTDOMAIN
+     * @Proxy setTextdomainLazyIfMissing()
      */
     public static function setOnMissingTextdomain(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
+    {
+        return self::setTextdomainLazyIfMissing($e, $textdomain, $priority);
+    }
+
+
+    /**
+     * onBoostrap call this method 
+     * Sets textdomain lazily only if missing
+     */
+    public static function setTextdomainLazyIfMissing(\Zend\Mvc\MvcEvent $e, $textdomain, $priority=1)
     {
         $sm = $e->getApplication()->getServiceManager();
         $service = $sm->get('textdomain');
