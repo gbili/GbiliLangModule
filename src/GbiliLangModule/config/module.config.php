@@ -16,6 +16,11 @@ return array(
             'it',
         ), 
     ),
+
+    'gbili_symlink_module' => array(
+        'gbili_lang_module_langnav_phtml' => __DIR__ . '/../view/partial/langnav.phtml',
+    ),
+
     'view_manager' => array(
         'template_path_stack' => array(
             strtolower(__NAMESPACE__) => __DIR__ . '/../view',
