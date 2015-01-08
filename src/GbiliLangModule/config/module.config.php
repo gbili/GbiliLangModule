@@ -29,7 +29,6 @@ return array(
 
     'controllers'        => include __DIR__ . '/controllers.config.php',
     'controller_plugins' => include __DIR__ . '/controller_plugins.config.php',
-    'lang_selector'      => include __DIR__ . '/lang_selector.config.php',
     'navigation'         => include __DIR__ . '/navigation.config.php',
     'service_manager'    => include __DIR__ . '/service_manager.config.php',
     'translator'         => include __DIR__ . '/translator.config.php',
