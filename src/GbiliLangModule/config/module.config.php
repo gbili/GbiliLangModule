@@ -18,7 +18,9 @@ return array(
     ),
 
     'gbili_symlink_module' => array(
-        'gbili_lang_module_langnav_phtml' => __DIR__ . '/../view/partial/langnav.phtml',
+        'symlinks' => array(
+            'gbili_lang_module_langnav_phtml' => __DIR__ . '/../view/partial/langnav.phtml'
+        ),
     ),
 
     'view_manager' => array(
