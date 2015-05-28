@@ -14,6 +14,7 @@ return array(
         'patternTranslate' => __NAMESPACE__ . '\View\Helper\PatternTranslate',
         'renderSelectOptionalTranslation' => __NAMESPACE__ . '\View\Helper\FormSelect',
         'renderCustomizableOptionsRadio' => __NAMESPACE__ . '\View\Helper\FormRadio',
+        'headLinkHreflang' => __NAMESPACE__ . '\View\Helper\Hreflang',
     ),
 
     'factories' => array(
